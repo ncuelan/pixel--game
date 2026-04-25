@@ -34,7 +34,7 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          VITE_GOOGLE_APP_SCRIPT_URL: "https://script.google.com/macros/s/AKfycby7hEVkpOvNyxn--ahvSuf6RHqf2GtLiPjyqE4St_WBvz78fOwWyXhEpffhLKI5295g/exec"
+          VITE_GOOGLE_APP_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbzrgV2IX7WYguPXJqbMSqJGDZwxmrQ-hr68CoNPBSKV_dROq-ZlfL_Un1w8U3H64UV2/exec"
           VITE_PASS_THRESHOLD: "3"
           VITE_QUESTION_COUNT: "5"
 
