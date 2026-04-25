@@ -80,12 +80,15 @@ VITE_QUESTION_COUNT=5
 
 ## 🚀 5. 自動部署到 GitHub Pages
 
-專案已配置好 `.github/workflows/deploy.yml`。推送到 `main` 分支便會自動執行部署。
+專案已配置好 `.github/workflows/deploy.yml`，推送到 `main` 分支便會自動執行建置與部署。
 
 ### 部署前設定：
 1. 進入 GitHub 專案的 **Settings** > **Pages**，將 **Build and deployment** 下的 **Source** 改為 **GitHub Actions**。
-2. 進入 **Settings** > **Secrets and variables** > **Actions**：
-   - 點選 **Secrets** 標籤頁：新增 `VITE_GOOGLE_APP_SCRIPT_URL`，填入您的 GAS URL。
-   - 點選 **Variables** 標籤頁：新增 `VITE_PASS_THRESHOLD` 及 `VITE_QUESTION_COUNT`（可參考 `.env.example` 填寫預設值）。
+2. 進入 **Settings** > **Secrets and variables** > **Actions** 來設定環境變數（請參考 `.env.example` 檔案）：
+   - 點選 **Secrets** 標籤頁，點擊 `New repository secret`：
+     - 新增 `VITE_GOOGLE_APP_SCRIPT_URL`，填入您的 GAS 應用程式 URL。
+   - 點選 **Variables** 標籤頁，點擊 `New repository variable`：
+     - 新增 `VITE_PASS_THRESHOLD`，填入過關門檻（例如 `3`）。
+     - 新增 `VITE_QUESTION_COUNT`，填入題目總數（例如 `5`）。
 
-設定完成後，每次推送程式碼至 `main` 分支，即會自動打包發佈至您的 GitHub Pages！
+設定完成後，每次推送程式碼至 `main` 分支，即會自動帶入環境變數、打包，並發佈至您的 GitHub Pages！
