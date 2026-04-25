@@ -1,40 +1,64 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { submitAnswers } from '../services/api';
 
-const Result = ({ score, total, threshold, resultData, onRestart }) => {
-  const isPassed = score >= threshold;
+export default function Result({ userId, answers, onRestart }) {
+  const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const processResult = async () => {
+      try {
+        const data = await submitAnswers(userId, answers);
+        setResult(data);
+      } catch (err) {
+        setError('TRANSMISSION FAILED. PLEASE TRY AGAIN.');
+      }
+    };
+    processResult();
+  }, [userId, answers]);
+
+  if (error) {
+    return (
+      <div className="pixel-container">
+        <h2 style={{ color: 'red' }}>{error}</h2>
+        <button className="pixel-button" onClick={onRestart} style={{ marginTop: '20px' }}>RETRY</button>
+      </div>
+    );
+  }
+
+  if (!result) {
+    return (
+      <div className="pixel-container crt-effect">
+        <h2 style={{ color: 'var(--color-primary)' }}>CALCULATING SCORE...</h2>
+      </div>
+    );
+  }
+
+  const { score, isPass } = result;
 
   return (
-    <div className="pixel-panel floating">
-      <h1 className="title" style={{ color: isPassed ? 'var(--success)' : 'var(--error)' }}>
-        {isPassed ? 'STAGE CLEAR!' : 'GAME OVER'}
+    <motion.div
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      className="pixel-container"
+    >
+      <h1 className="crt-effect" style={{ 
+        color: isPass ? 'var(--color-primary)' : 'red', 
+        fontSize: '48px', 
+        marginBottom: '20px',
+        textAlign: 'center'
+      }}>
+        {isPass ? 'STAGE CLEARED!' : 'GAME OVER'}
       </h1>
       
-      <div style={{ fontSize: '1.5rem', marginBottom: '20px', fontFamily: '"Press Start 2P"' }}>
-        YOUR SCORE<br/>
-        <span style={{color: 'var(--primary-color)', fontSize: '2rem', display: 'inline-block', margin: '20px 0'}}>{score} / {total}</span>
+      <div style={{ fontSize: '24px', marginBottom: '40px' }}>
+        FINAL SCORE: <span style={{ color: 'var(--color-secondary)' }}>{score}</span>
       </div>
 
-      <div style={{ textAlign: 'left', background: 'rgba(0,0,0,0.3)', padding: '15px', marginBottom: '30px', border: '2px solid var(--border-color)', fontSize: '0.9rem', lineHeight: '1.5' }}>
-        {resultData ? (
-          <>
-            <p style={{color: 'var(--success)'}}><strong>[系統提示] 同步伺服器成功</strong></p>
-            {resultData.isNewUser ? (
-              <p>新玩家初次登錄！</p>
-            ) : (
-              <p>歡迎回來，老玩家！</p>
-            )}
-            <p>※詳細記錄詳見 Google Sheet 端</p>
-          </>
-        ) : (
-          <p style={{ color: 'var(--text-muted)' }}>[系統提示] 離線遊玩模式，無後端連線。</p>
-        )}
-      </div>
-
-      <button className="pixel-btn" onClick={onRestart}>
+      <button className="pixel-button" onClick={onRestart} style={{ maxWidth: '300px' }}>
         PLAY AGAIN
       </button>
-    </div>
+    </motion.div>
   );
-};
-
-export default Result;
+}

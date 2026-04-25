@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+      - master
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -15,39 +17,36 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-
       - name: Install dependencies
-        run: npm ci
-
+        run: npm install
       - name: Build
-        run: npm run build
         env:
           VITE_GOOGLE_APP_SCRIPT_URL: ${{ secrets.VITE_GOOGLE_APP_SCRIPT_URL }}
-          VITE_PASS_THRESHOLD: ${{ vars.VITE_PASS_THRESHOLD }}
-          VITE_QUESTION_COUNT: ${{ vars.VITE_QUESTION_COUNT }}
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-
+          VITE_PASS_THRESHOLD: ${{ vars.VITE_PASS_THRESHOLD || '3' }}
+          VITE_QUESTION_COUNT: ${{ vars.VITE_QUESTION_COUNT || '5' }}
+        run: npm run build -- --base=/${{ github.event.repository.name }}/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: ./dist
 
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
