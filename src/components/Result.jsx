@@ -16,15 +16,23 @@ const Result = ({ score, total, threshold, resultData, onRestart }) => {
 
       <div style={{ textAlign: 'left', background: 'rgba(0,0,0,0.3)', padding: '15px', marginBottom: '30px', border: '2px solid var(--border-color)', fontSize: '0.9rem', lineHeight: '1.5' }}>
         {resultData ? (
-          <>
-            <p style={{color: 'var(--success)'}}><strong>[系統提示] 同步伺服器成功</strong></p>
-            {resultData.isNewUser ? (
-              <p>新玩家初次登錄！</p>
-            ) : (
-              <p>歡迎回來，老玩家！</p>
-            )}
-            <p>※詳細記錄詳見 Google Sheet 端</p>
-          </>
+          resultData.error ? (
+            <>
+              <p style={{color: 'var(--error)'}}><strong>[系統提示] 後端發生錯誤</strong></p>
+              <p>錯誤訊息：{resultData.error}</p>
+              <p>請檢查 Google Sheet 設定或授權。</p>
+            </>
+          ) : (
+            <>
+              <p style={{color: 'var(--success)'}}><strong>[系統提示] 同步伺服器成功</strong></p>
+              {resultData.isNewUser ? (
+                <p>新玩家初次登錄！</p>
+              ) : (
+                <p>歡迎回來，老玩家！</p>
+              )}
+              <p>※詳細記錄詳見 Google Sheet 端</p>
+            </>
+          )
         ) : (
           <p style={{ color: 'var(--text-muted)' }}>[系統提示] 離線遊玩模式，無後端連線。</p>
         )}
