@@ -1,0 +1,152 @@
+:root {
+  --bg-color: #1a1a2e;
+  --panel-bg: #16213e;
+  --primary-color: #ff2e63;
+  --secondary-color: #0f3460;
+  --text-main: #eaeaea;
+  --text-muted: #888;
+  --border-color: #eaeaea;
+  --success: #4cd137;
+  --error: #e84118;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'DotGothic16', 'Press Start 2P', system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  image-rendering: pixelated; /* 對某些系統啟用像素渲染 */
+  overflow: hidden;
+}
+
+/* Pixel Button Style */
+.pixel-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  font-family: 'Press Start 2P', 'DotGothic16', sans-serif;
+  cursor: pointer;
+  position: relative;
+  margin: 10px;
+  box-shadow: 
+    inset -4px -4px 0px 0px rgba(0, 0, 0, 0.4),
+    inset 4px 4px 0px 0px rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  transition: transform 0.1s;
+}
+
+.pixel-btn:active {
+  transform: scale(0.95);
+  box-shadow: 
+    inset 4px 4px 0px 0px rgba(0, 0, 0, 0.4),
+    inset -4px -4px 0px 0px rgba(255, 255, 255, 0.3);
+}
+
+.pixel-btn:disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Pixel Container */
+.pixel-panel {
+  background: var(--panel-bg);
+  padding: 30px;
+  max-width: 600px;
+  width: 90vw;
+  text-align: center;
+  border: 4px solid var(--border-color);
+  box-shadow: 
+    8px 8px 0px 0px rgba(0,0,0,0.5);
+}
+
+/* Pixel Input */
+.pixel-input {
+  background: transparent;
+  border: 4px solid var(--text-main);
+  color: var(--text-main);
+  padding: 10px;
+  font-size: 1.2rem;
+  font-family: 'Press Start 2P', 'DotGothic16', sans-serif;
+  margin-bottom: 20px;
+  width: 80%;
+  text-align: center;
+  outline: none;
+}
+.pixel-input:focus {
+  border-color: var(--primary-color);
+}
+
+.title {
+  font-family: 'Press Start 2P', monospace;
+  color: var(--primary-color);
+  text-shadow: 3px 3px 0 var(--secondary-color);
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 20px;
+  background: var(--secondary-color);
+  border: 4px solid var(--border-color);
+  padding: 5px;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.option-btn {
+  background: var(--secondary-color);
+  text-align: left;
+  padding: 15px;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.option-btn:hover {
+  background: #1a4f8f;
+}
+
+/* Micro animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.floating {
+  animation: float 3s ease-in-out infinite;
+}
+
+.progress-bar {
+  height: 20px;
+  border: 4px solid var(--border-color);
+  width: 100%;
+  margin-bottom: 20px;
+  background: #000;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--primary-color);
+  transition: width 0.3s ease;
+}
